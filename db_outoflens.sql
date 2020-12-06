@@ -4,9 +4,9 @@ create database if not exists DB_OOL;
 
 use DB_OOL;
 
-create table if not exists USUÁRIO
+create table if not exists PESSOA
 (
-    CÓDIGO int auto_increment not null primary key,
+    	CÓDIGO int auto_increment not null primary key,
 	NOME varchar(255) not null,
 	NOME_SOCIAL varchar(255) not null,
 	GENERO char(2) not null,
@@ -16,41 +16,41 @@ create table if not exists USUÁRIO
 	TELEFONE varchar(15) not null,
 	CEL varchar(15) not null,
 	EMAIL varchar(255) not null,
-	SENHA varchar(20) not null,
 	ATIVO boolean not null default true
 );
 
 create table if not exists FUNCIONÁRIO
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_USUÁRIO int not null,
+    	CÓDIGO int auto_increment primary key,
+    	CÓDIGO_USUÁRIO int not null,
 	NÍVEL_ACESSO int not null,
-	RFID varchar(255) not null
+	RFID varchar(255) not null,
+	SENHA varchar(20) not null,
 );
 
 create table if not exists CLIENTE
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_USUÁRIO int not null
+	CÓDIGO int auto_increment primary key,
+	CÓDIGO_USUÁRIO int not null
 );
 
 create table if not exists CARGO
 (
-    CÓDIGO int auto_increment primary key,
-    NOME varchar(255) not null,
+    	CÓDIGO int auto_increment primary key,
+    	NOME varchar(255) not null,
 	DESCRIÇÃO varchar(255) not null
 );
 
 create table if not exists ASSOC_CARGO_FUNCIONÁRIO
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_FUNCIONÁRIO int not null,
+    	CÓDIGO int auto_increment primary key,
+    	CÓDIGO_FUNCIONÁRIO int not null,
 	CÓDIGO_CARGO int not null
 );
 
 create table if not exists TURNO
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	CÓDIGO_FUNCIONÁRIO int not null,
 	HORÁRIO_ENTRADA datetime not null,
 	HORÁRIO_SAÍDA datetime null
@@ -58,21 +58,21 @@ create table if not exists TURNO
 
 create table if not exists TURNO
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_FUNCIONÁRIO int not null,
-    HORÁRIO datetime not null
+    	CÓDIGO int auto_increment primary key,
+    	CÓDIGO_FUNCIONÁRIO int not null,
+    	HORÁRIO datetime not null
 );
 
 create table if not exists CONTRATAÇÃO
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	DIA datetime not null,
 	CÓDIGO_FUNCIONÁRIO int not null
 );
 
 create table if not exists TIPO_PACOTE
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	TIPO_PACOTE varchar(255) not null,
 	DESCRIÇÃO varchar(255) not null,
 	DISPONÍVEL boolean not null
@@ -80,7 +80,7 @@ create table if not exists TIPO_PACOTE
 
 create table if not exists PACOTE
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	CÓDIGO_TIPO_PACOTE int not null,
 	VALOR numeric(18,2) not null,
 	QUALIDADE varchar(255) not null,
@@ -93,8 +93,8 @@ create table if not exists PACOTE
 
 create table if not exists PEDIDO
 (
-    CÓDIGO int auto_increment primary key,
-    DIA datetime not null,
+    	CÓDIGO int auto_increment primary key,
+    	DIA datetime not null,
 	CÓDIGO_CLIENTE int not null,
 	ENTREGUE boolean not null,
 	CÓDIGO_PACOTE int not null
@@ -102,7 +102,7 @@ create table if not exists PEDIDO
 
 create table if not exists SESSÃO
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	ENDEREÇO varchar(255) not null,
 	HORARIO_INÍCIO datetime not null,
 	HORARIO_FINALIZAÇÃO datetime not null,
@@ -112,15 +112,15 @@ create table if not exists SESSÃO
 
 create table if not exists ASSOC_SESSÃO_FUNCIONÁRIO
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_SESSÃO int not null,
+    	CÓDIGO int auto_increment primary key,
+   	CÓDIGO_SESSÃO int not null,
 	CÓDIGO_FUNCIONÁRIO int not null
 );
 
 create table if not exists RELATÓRIO
 (
-    CÓDIGO int auto_increment primary key,
-    DIA datetime not null,
+    	CÓDIGO int auto_increment primary key,
+    	DIA datetime not null,
 	DESCRIÇÃO varchar(255) not null,
 	CÓDIGO_PEDIDO int,
 	CÓDIGO_SESSÃO int,
@@ -129,7 +129,7 @@ create table if not exists RELATÓRIO
 
 create table if not exists LEVANTAMENTO_ORÇAMENTO
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	NOME varchar(255) not null,
 	VALOR numeric(18,2) not null,
 	CÓDIGO_PEDIDO int not null
@@ -137,15 +137,15 @@ create table if not exists LEVANTAMENTO_ORÇAMENTO
 
 create table if not exists TIPO_EQUIPAMENTO
 (
-    CÓDIGO int auto_increment primary key,
-    TIPO_EQUIPAMENTO varchar(255) not null,
+    	CÓDIGO int auto_increment primary key,
+    	TIPO_EQUIPAMENTO varchar(255) not null,
 	DESCRIÇÃO varchar(255) not null
 );
 
 create table if not exists EQUIPAMENTO
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_TIPO_EQUIPAMENTO int not null,
+    	CÓDIGO int auto_increment primary key,
+    	CÓDIGO_TIPO_EQUIPAMENTO int not null,
 	NOME varchar(255) not null,
 	USO varchar(255) not null,
 	VALOR numeric(18,2) not null,
@@ -154,8 +154,8 @@ create table if not exists EQUIPAMENTO
 
 create table if not exists RETIRADA_EQUIPAMENTO
 (
-    CÓDIGO int auto_increment primary key,
-    CÓDIGO_EQUIPAMENTO int not null,
+    	CÓDIGO int auto_increment primary key,
+    	CÓDIGO_EQUIPAMENTO int not null,
 	CÓDIGO_ASSOC_SESSÃO_FUNCIONÁRIO int not null,
 	HORÁRIO_RETIRADA datetime not null,
 	HORÁRIO_RETORNO datetime not null
@@ -163,7 +163,7 @@ create table if not exists RETIRADA_EQUIPAMENTO
 
 create table if not exists DEMISSÃO
 (
-    CÓDIGO int auto_increment primary key,
+    	CÓDIGO int auto_increment primary key,
 	DIA datetime not null,
 	MOTIVO varchar(255) not null,
 	CÓDIGO_FUNCIONÁRIO int not null,
