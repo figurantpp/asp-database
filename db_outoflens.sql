@@ -19,13 +19,21 @@ create table if not exists PESSOA
 	ATIVO boolean not null default true
 );
 
+create table if not exists CARGO
+(
+    	CÓDIGO int auto_increment primary key,
+    	NOME varchar(255) not null,
+	DESCRIÇÃO varchar(255) not null
+);
+
 create table if not exists FUNCIONÁRIO
 (
     	CÓDIGO int auto_increment primary key,
     	CÓDIGO_USUÁRIO int not null,
 	NÍVEL_ACESSO int not null,
 	RFID varchar(255) not null,
-	SENHA varchar(20) not null
+	SENHA varchar(20) not null,
+	CÓDIGO_CARGO int not null
 );
 
 create table if not exists CLIENTE
@@ -34,33 +42,12 @@ create table if not exists CLIENTE
 	CÓDIGO_USUÁRIO int not null
 );
 
-create table if not exists CARGO
-(
-    	CÓDIGO int auto_increment primary key,
-    	NOME varchar(255) not null,
-	DESCRIÇÃO varchar(255) not null
-);
-
-create table if not exists ASSOC_CARGO_FUNCIONÁRIO
-(
-    	CÓDIGO int auto_increment primary key,
-    	CÓDIGO_FUNCIONÁRIO int not null,
-	CÓDIGO_CARGO int not null
-);
-
 create table if not exists TURNO
 (
     	CÓDIGO int auto_increment primary key,
 	CÓDIGO_FUNCIONÁRIO int not null,
 	HORÁRIO_ENTRADA datetime not null,
 	HORÁRIO_SAÍDA datetime null
-);
-
-create table if not exists TURNO
-(
-    	CÓDIGO int auto_increment primary key,
-    	CÓDIGO_FUNCIONÁRIO int not null,
-    	HORÁRIO datetime not null
 );
 
 create table if not exists CONTRATAÇÃO
@@ -88,7 +75,7 @@ create table if not exists PACOTE
 	TAMANHO_A int not null,
 	TAMANHO_L int not null,
 	DISPONÍVEL boolean not null default true,
-	OBSERVAÇÃO varchar(255) not null
+	DESCRIÇÃO varchar(255) not null
 );
 
 create table if not exists IMAGEM_PACOTE
@@ -135,14 +122,6 @@ create table if not exists RELATÓRIO
 	CÓDIGO_FUNCIONÁRIO int not null
 );
 
-create table if not exists LEVANTAMENTO_ORÇAMENTO
-(
-    	CÓDIGO int auto_increment primary key,
-	NOME varchar(255) not null,
-	VALOR numeric(18,2) not null,
-	CÓDIGO_PEDIDO int not null
-);
-
 create table if not exists TIPO_EQUIPAMENTO
 (
     	CÓDIGO int auto_increment primary key,
@@ -179,11 +158,9 @@ create table if not exists DEMISSÃO
 );
 
 ALTER TABLE FUNCIONÁRIO ADD FOREIGN KEY (CÓDIGO_USUÁRIO) REFERENCES PESSOA (CÓDIGO);
+ALTER TABLE FUNCIONÁRIO ADD FOREIGN KEY (CÓDIGO_CARGO) REFERENCES CARGO (CÓDIGO);
 
 ALTER TABLE CLIENTE ADD FOREIGN KEY (CÓDIGO_USUÁRIO) REFERENCES PESSOA (CÓDIGO);
-
-ALTER TABLE ASSOC_CARGO_FUNCIONÁRIO ADD FOREIGN KEY (CÓDIGO_CARGO) REFERENCES CARGO (CÓDIGO);
-ALTER TABLE ASSOC_CARGO_FUNCIONÁRIO ADD FOREIGN KEY (CÓDIGO_FUNCIONÁRIO) REFERENCES FUNCIONÁRIO (CÓDIGO);
 
 ALTER TABLE TURNO ADD FOREIGN KEY (CÓDIGO_FUNCIONÁRIO) REFERENCES FUNCIONÁRIO (CÓDIGO);
 
@@ -205,8 +182,6 @@ ALTER TABLE RELATÓRIO ADD FOREIGN KEY (CÓDIGO_PEDIDO) REFERENCES PEDIDO (CÓDI
 ALTER TABLE RELATÓRIO ADD FOREIGN KEY (CÓDIGO_SESSÃO) REFERENCES SESSÃO (CÓDIGO);
 ALTER TABLE RELATÓRIO ADD FOREIGN KEY (CÓDIGO_FUNCIONÁRIO) REFERENCES FUNCIONÁRIO (CÓDIGO);
 
-ALTER TABLE LEVANTAMENTO_ORÇAMENTO ADD FOREIGN KEY (CÓDIGO_PEDIDO) REFERENCES PEDIDO (CÓDIGO);
-
 ALTER TABLE EQUIPAMENTO ADD FOREIGN KEY (CÓDIGO_TIPO_EQUIPAMENTO) REFERENCES TIPO_EQUIPAMENTO (CÓDIGO);
 
 ALTER TABLE RETIRADA_EQUIPAMENTO ADD FOREIGN KEY (CÓDIGO_EQUIPAMENTO) REFERENCES EQUIPAMENTO (CÓDIGO);
@@ -214,5 +189,3 @@ ALTER TABLE RETIRADA_EQUIPAMENTO ADD FOREIGN KEY (CÓDIGO_ASSOC_SESSÃO_FUNCION�
 
 ALTER TABLE DEMISSÃO ADD FOREIGN KEY (CÓDIGO_FUNCIONÁRIO) REFERENCES FUNCIONÁRIO (CÓDIGO);
 ALTER TABLE DEMISSÃO ADD FOREIGN KEY (CÓDIGO_RELATÓRIO) REFERENCES RELATÓRIO (CÓDIGO);
-
-DROP TABLE LEVANTAMENTO_ORÇAMENTO;
