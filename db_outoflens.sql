@@ -75,7 +75,7 @@ create table if not exists TIPO_PACOTE
     	CÓDIGO int auto_increment primary key,
 	TIPO_PACOTE varchar(255) not null,
 	DESCRIÇÃO varchar(255) not null,
-	DISPONÍVEL boolean not null
+	DISPONÍVEL boolean not null default true
 );
 
 create table if not exists PACOTE
@@ -87,7 +87,7 @@ create table if not exists PACOTE
 	QUANTIDADE int not null,
 	TAMANHO_A int not null,
 	TAMANHO_L int not null,
-	DISPONÍVEL boolean not null,
+	DISPONÍVEL boolean not null default true,
 	OBSERVAÇÃO varchar(255) not null
 );
 
@@ -104,7 +104,7 @@ create table if not exists PEDIDO
     	CÓDIGO int auto_increment primary key,
     	DIA datetime not null,
 	CÓDIGO_CLIENTE int not null,
-	ENTREGUE boolean not null,
+	ENTREGUE boolean not null default false,
 	CÓDIGO_PACOTE int not null
 );
 
