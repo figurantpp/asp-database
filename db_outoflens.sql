@@ -10,7 +10,7 @@ create table if not exists PESSOA
 	NOME varchar(255) not null,
 	NOME_SOCIAL varchar(255) not null,
 	GENERO char(2) not null,
-	RG varchar(9) not null,
+	RG varchar(15) not null,
 	CPF varchar(11) not null, 
 	NASCIMENTO datetime not null,
 	TELEFONE varchar(15) not null,
@@ -189,3 +189,14 @@ ALTER TABLE RETIRADA_EQUIPAMENTO ADD FOREIGN KEY (CÓDIGO_ASSOC_SESSÃO_FUNCION�
 
 ALTER TABLE DEMISSÃO ADD FOREIGN KEY (CÓDIGO_FUNCIONÁRIO) REFERENCES FUNCIONÁRIO (CÓDIGO);
 ALTER TABLE DEMISSÃO ADD FOREIGN KEY (CÓDIGO_RELATÓRIO) REFERENCES RELATÓRIO (CÓDIGO);
+
+create view UltimoTurno as
+    select
+           CÓDIGO,
+           CÓDIGO_FUNCIONÁRIO,
+           HORÁRIO_ENTRADA,
+           HORÁRIO_SAÍDA,
+           GREATEST(coalesce(HORÁRIO_ENTRADA, HORÁRIO_SAÍDA),
+           coalesce(HORÁRIO_SAÍDA, HORÁRIO_ENTRADA)) as MAIOR_HORÁRIO
+            from TURNO 
+                order by MAIOR_HORÁRIO desc limit 1;
